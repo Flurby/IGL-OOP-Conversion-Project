@@ -1,0 +1,54 @@
+INCREMENT 1, 10, WITH BAR
+
+hbox:
+    xsize 580
+    hbox:
+        xalign 0.0
+        textbutton _(" << "):
+            action SetVariable("XXX", (XXX - 10))
+            text_size mm_arrowsize
+        textbutton _(" < "):
+            action SetVariable("XXX", (XXX - 1))
+            text_size mm_arrowsize
+    hbox:
+        xalign 0.5 yalign 0.5
+        text _("XXX: [XXX]") size 15
+    hbox:
+        xalign 1.0
+        textbutton _(" > "):
+            action SetVariable("XXX", (XXX + 1))
+            text_size mm_arrowsize
+        textbutton _(" >> "):
+            action SetVariable("XXX", (XXX + 10))
+            text_size mm_arrowsize
+
+bar value XXX range 100 xalign 0.1 yalign 0.1 xsize 580 ysize 8 left_bar Frame("images/effects/custom_gui/skillbarl.png", 38, 10) right_bar Frame("images/effects/custom_gui/skillbarr.png", 38, 10)
+_______________________________________________________________
+
+TOGGLE T/F
+
+textbutton _("XXX: [XXX]"):
+    text_size 15
+    action ToggleVariable("XXX")
+
+_______________________________________________________________
+
+CYCLE 3
+
+    if XXX and not YYY and not ZZZ:
+        frame:
+            textbutton _("Scenario: XXX"):
+                text_size 15
+                action ToggleVariable("XXX"), ToggleVariable ("YYY")
+    if YYY and not XXX and not ZZZ:
+        frame:    
+            textbutton _("Scenario: YYY"):
+                text_size 15
+                action ToggleVariable("ZZZ"), ToggleVariable ("YYY")
+    if ZZZ and not YYY and not XXX:
+        frame:
+            textbutton _("Scenario: ZZZ"):
+                text_size 15
+                action ToggleVariable("XXX"), ToggleVariable ("ZZZ")
+
+_______________________________________________________________
