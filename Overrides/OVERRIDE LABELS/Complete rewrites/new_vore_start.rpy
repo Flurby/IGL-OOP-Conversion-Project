@@ -1,4 +1,8 @@
 label vore_start_override(pred):
+
+    $pred.eaten_by = True
+    $player_swallowed = True
+
     #Stop music, fade to bg effect blackout with dissolve. Not with fade.
     call fade_to_black
     

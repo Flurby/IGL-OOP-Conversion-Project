@@ -10,7 +10,7 @@ label instantiate_replacename: # Name must be entirely lowercase in labels. Exam
     $replaceletter.location = "replacename's Home"
     $replaceletter.c = character
     #replaceletter.inv = Inventory(_("Inventory"))
-
+    
     #Identity
     $replaceletter.name = name
     $replaceletter.thing_name = "dragon lady"
@@ -309,3 +309,9 @@ label check_replacename_phone_available: # Name must be entirely lowercase in la
             jump end_conversation
 
 return
+
+
+
+label random_function_name:
+    "idk man I dont make the rules"
+    return

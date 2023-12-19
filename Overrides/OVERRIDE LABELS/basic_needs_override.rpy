@@ -18,39 +18,25 @@ label quick_check_basic_needs_override:
     if currentenergy < 0:
         $currentenergy = 0
     if currentenergy == 0:
-
-        #if inside any of the preds in any way, (oral, anal, intestine, ub, whatever)
-        #call their own personal vore_sleep function.
-        python:
-            for a in ActorList:
-                if a.eaten_by:
-                    a.vore_sleep()
-                    player_swallowed = True
-                    
-        
-        #if player_swallowed:
-        #    if player_unbirthed:
-        #        "You drift off to sleep."
-        #        if side_pred == "Euthalia" and unbirth_setup == "Digestion" and (not willing_prey or willing_digestion):
-        #            jump digested_sleep
-        #        else:
-        #            jump unbirth_sleep_start
-        #    else:
-        #        if willing_digestion:
-        #            "You let your eager confines massage your tired muscles as you drift off to sleep."
-        #        else:
-        #            "Although this is possibly the worst place to sleep, you're pretty desperate for some rest."
-        #       jump digested_sleep
-        ###else:
-            
-        if not player_swallowed:
+        if player_swallowed:
+            if player_unbirthed:
+                "You drift off to sleep."
+                if side_pred == "Euthalia" and unbirth_setup == "Digestion" and (not willing_prey or willing_digestion):
+                    jump digested_sleep
+                else:
+                    jump unbirth_sleep_start
+            else:
+                if willing_digestion:
+                    "You let your eager confines massage your tired muscles as you drift off to sleep."
+                else:
+                    "Although this is possibly the worst place to sleep, you're pretty desperate for some rest."
+                jump digested_sleep
+        else:
             "You collapse out of exhaustion and quickly drift off to sleep."
-
             $sleep_quality = 0.6
             $ lost_consciousness = True
             call drunk_blackout_disable_flags 
             jump sleep_until_rested
-
     elif currentenergy > maxenergy:
         $currentenergy = maxenergy
 
@@ -322,9 +308,9 @@ label quick_check_basic_needs_override:
 label check_basic_needs_override:
     call quick_check_basic_needs 
 
-    ```#Continue sleeping if unbirthed
+    #Continue sleeping if unbirthed
     if player_unbirthed and slumbermins > 0:
-        jump unbirth_sleep_cont```
+        jump unbirth_sleep_cont
 
     #Update variables
     if lost_consciousness:
@@ -338,12 +324,12 @@ label check_basic_needs_override:
 
     $ player_is_paying = False
 
-    ```#Finish Process
+    #Finish Process
     if vore_location == "Intestine1" or vore_location == "Intestine2" or vore_location == "Intestine3":
         if anal_vore and anal_vore_progress >= pred_intestines_length:
             jump digested_av_reach_stomach
         elif not anal_vore and pred_intestines_length <= 0:
-            jump digested_exit_anus```
+            jump digested_exit_anus
 
     if cutscene:
         $ cutscene = False
@@ -351,7 +337,9 @@ label check_basic_needs_override:
         $dayphase = 0
 
     #Go to
-    if is_outside:
+    if eaten_by_elaine or eaten_by_jasmine or eaten_by_side_pred:
+        jump unified_vore
+    elif is_outside:
         jump city_map
     elif current_location == "Supermarket":
         jump supermarket
@@ -379,8 +367,6 @@ label check_basic_needs_override:
         jump ice_cream_parlor
     elif current_location == "Random":
         jump random_home
-
-```        
     elif current_location == custom1_home_name:
         jump custom1_home
     elif current_location == custom2_home_name:
@@ -400,4 +386,4 @@ label check_basic_needs_override:
     elif current_location == custom9_home_name:
         jump custom9_home
     elif current_location == custom10_home_name:
-        jump custom10_home```
+        jump custom10_home

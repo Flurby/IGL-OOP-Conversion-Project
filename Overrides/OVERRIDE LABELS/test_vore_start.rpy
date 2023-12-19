@@ -1,5 +1,11 @@
-label test_vore_start(word):
-    "[word.name]"
+label test_vore_start:
+
+
+    $replaceletter.vore_type = "Oral"
+    
+
+
+    call vore_start_override(replaceletter)
     return
 
 #call test_vore_start(a) #works.
