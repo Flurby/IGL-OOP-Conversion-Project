@@ -53,7 +53,8 @@ define config.label_overrides = {
     
 }
 
-```$renpy.show("custom8", what=a.testimj)  # where a.testinj is an image object, not a string filepath
+```
+$renpy.show("custom8", what=a.testimj)  # where a.testinj is an image object, not a string filepath
 $renpy.hide("custom8")
 
 _override

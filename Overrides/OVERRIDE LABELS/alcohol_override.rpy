@@ -36,6 +36,12 @@ label drink_wine_override:
     elif drinking_with == "Custom10":
         $custom10_drunkenness += 6.75
 
+    python:
+        for item in ActorList:
+            if drinking_with == item.name:
+                item.drunkenness += 6.75
+                #custom10_drunkenness += 6.75
+
     return
 
 label drink_beer_override:
@@ -76,7 +82,11 @@ label drink_beer_override:
         $custom9_drunkenness += 6.75
     elif drinking_with == "Custom10":
         $custom10_drunkenness += 6.75
-
+    python:
+        for item in ActorList:
+            if drinking_with == item.name:
+                item.drunkenness += 6.75
+                #custom10_drunkenness += 6.75
     return
 
 label drink_hard_liquor_override:
@@ -116,7 +126,11 @@ label drink_hard_liquor_override:
         $custom9_drunkenness += 25.65
     elif drinking_with == "Custom10":
         $custom10_drunkenness += 25.65
-
+    python:
+        for item in ActorList:
+            if drinking_with == item.name:
+                item.drunkenness += 25.65
+                #custom10_drunkenness += 25.65
     return
 
 label drink_cocktail_override:
@@ -156,7 +170,11 @@ label drink_cocktail_override:
         $custom9_drunkenness += 9.45
     elif drinking_with == "Custom10":
         $custom10_drunkenness += 9.45
-
+    python:
+        for item in ActorList:
+            if drinking_with == item.name:
+                item.drunkenness += 9.45
+                #custom10_drunkenness += 9.45
     return
 
 label drink_shot_override:
@@ -198,7 +216,11 @@ label drink_shot_override:
             $custom9_drunkenness += 6.42
         elif drinking_with == "Custom10":
             $custom10_drunkenness += 6.42
-
+        python:
+            for item in ActorList:
+                if drinking_with == item.name:
+                    item.drunkenness += 6.42
+                    #custom10_drunkenness += 6.42
     return
 
 label blackout_vored_override:
@@ -303,6 +325,8 @@ label blackout_vored_override:
         $ eaten_by_side_pred = True
         $side_pred = "Custom10"
         $custom10_unwilling_vore_count += 1
+
+    #TODO
 
     $ drinking_with = "None"
     if pred_relationship >= relationship_digest_threshold:
@@ -529,5 +553,13 @@ label sober_up_npcs_override:
                 $custom10_drunkenness -= 1.68 * drunktimer_diff
         elif custom10_drunkenness < 0:
             $custom10_drunkenness = 0
+    
+    python:
+        #Why does it matter if you've met this person? Skipping has_met check.
+        for item in ActorList:
+            if item.drunkenness > 0:
+                if not drinking_with == item.name:
+                    item.drunkenness -= 1.68 * drunktimer_diff
+                    #custom10_drunkenness -= 1.68 * drunktimer_diff
 
     return

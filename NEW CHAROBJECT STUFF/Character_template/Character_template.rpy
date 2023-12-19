@@ -80,7 +80,16 @@ label instantiate_replacename: # Name must be entirely lowercase in labels. Exam
     $replaceletter.preyspecies = "None"
     $replaceletter.preynoun = "cat"
     $replaceletter.preyattitude = "Unwilling"
-    $replaceletter.preyaction_cooldown = 0    
+    $replaceletter.preyaction_cooldown = 0   
+
+return 
+
+label check_replacename_buy_drinks:
+    if replaceletter.relationship > -1:
+        $replaceletter.buy_drinks = True
+    else:
+        $replaceletter.buy_drinks = False
+    return
 
 label check_replacename_hunger: # Name must be entirely lowercase in labels. Example: "check_altea_hunger" NOT "check_Altea_hunger"
     if theweekday == 1:

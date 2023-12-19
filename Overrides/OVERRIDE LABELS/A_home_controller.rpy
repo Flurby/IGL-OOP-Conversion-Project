@@ -28,9 +28,28 @@ label go_home_override:
     elif player_home == custom10_home_name:
         jump custom10_home
 
+    python:
+        for item in ActorList:
+            if player_home == item.home_name_location:
+                renpy.jump(item.name.lower() + "_home")
+                # jump customX_home
+                break
+
+    # Should never get to this point.
+    "ERROR: Home not found."
+    return  
+
 
 label go_back_to_loc_override:
     stop ambiance fadeout 1.0
+
+    python:
+        for item in ActorList:
+            if current_location == item.home_name_location:
+                renpy.jump(item.name.lower() + "_home")
+                # jump customX_home
+                break
+
     if current_location == "Elaine's Home":
         jump home1
     elif current_location == "Jasmine's Home":

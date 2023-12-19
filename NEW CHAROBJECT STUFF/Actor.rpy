@@ -5,8 +5,8 @@ define ActorList = []
 label instantiate_characters:
     python:
         for item in ActorList:
-            renpy.jump("instantiate_" + item.name.lower())
-
+            renpy.call("instantiate_" + item.name.lower())
+    return
 init python:
     class Actor:
         def __init__(self, charObj, characterName):
@@ -17,9 +17,10 @@ init python:
             self.default_set = False
             self.vore_template = False
             self.location = "UNINITIALIZED_LOCATION"
-            self.last_location = "UNINITIALIZED_LOCATION"
+            self.last_location = "UNINITIALIZED_LAST_LOCATION"
             self.room = "UNINITIALIZED_ROOM"
             self.is_home = True
+            self.home_name_location = "UNINITIALIZED_HOME_NAME" # "Sigrid's Home" not label name
             #self.inv = Inventory(_("Inventory"))
 
             #Identity
@@ -57,12 +58,14 @@ init python:
             self.eat_npcs = False
             self.hostile = False
             self.digest_ignore_threshold = False 
+            self.buy_drinks = True
 
             #Relationship
             self.relationship = 0
             self.rel_status = "Acquaintance"
             self.has_met = False
-            self.bar_rejected_custom1 = False
+            self.bar_rejected = False
+
             self.has_been_intimate_with = False
             self.favors = 0
             self.had_sex_with = False
@@ -125,7 +128,10 @@ init python:
             
             ActorList.append(self)
 
-        
+        def update_buy_drinks(self):
+            renpy.call("check_" + self.name.lower() + "_buy_drinks")
+            return
+
         def set_drinking_intensity(self):
             renpy.call("set_" + self.name.lower() + "_drinking_intensity")
             return

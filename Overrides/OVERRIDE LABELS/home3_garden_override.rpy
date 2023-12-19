@@ -1,65 +1,47 @@
 label home3_garden_actions_override:
-    menu:
-        "Talk to the [custom1_thing_name]" if custom_char1_enabled and current_location == custom1_location and not has_met_custom1 and not on_phone:
-            jump custom1_conversation_init
-        "Talk to [custom1_name]" if custom_char1_enabled and current_location == custom1_location and has_met_custom1 and not on_phone:
-            jump custom1_conversation_init
-        "Talk to the [custom2_thing_name]" if custom_char2_enabled and current_location == custom2_location and not has_met_custom2 and not on_phone:
-            jump custom2_conversation_init
-        "Talk to [custom2_name]" if custom_char2_enabled and current_location == custom2_location and has_met_custom2 and not on_phone:
-            jump custom2_conversation_init
-        "Talk to the [custom3_thing_name]" if custom_char3_enabled and current_location == custom3_location and not has_met_custom3 and not on_phone:
-            jump custom3_conversation_init
-        "Talk to [custom3_name]" if custom_char3_enabled and current_location == custom3_location and has_met_custom3 and not on_phone:
-            jump custom3_conversation_init
-        "Talk to the [custom4_thing_name]" if custom_char4_enabled and current_location == custom4_location and not has_met_custom4 and not on_phone:
-            jump custom4_conversation_init
-        "Talk to [custom4_name]" if custom_char4_enabled and current_location == custom4_location and has_met_custom4 and not on_phone:
-            jump custom4_conversation_init
-        "Talk to the [custom5_thing_name]" if custom_char5_enabled and current_location == custom5_location and not has_met_custom5 and not on_phone:
-            jump custom5_conversation_init
-        "Talk to [custom5_name]" if custom_char5_enabled and current_location == custom5_location and has_met_custom5 and not on_phone:
-            jump custom5_conversation_init
-        "Talk to the [custom6_thing_name]" if custom_char6_enabled and current_location == custom6_location and not has_met_custom6 and not on_phone:
-            jump custom6_conversation_init
-        "Talk to [custom6_name]" if custom_char6_enabled and current_location == custom6_location and has_met_custom6 and not on_phone:
-            jump custom6_conversation_init
-        "Talk to the [custom7_thing_name]" if custom_char7_enabled and current_location == custom7_location and not has_met_custom7 and not on_phone:
-            jump custom7_conversation_init
-        "Talk to [custom7_name]" if custom_char7_enabled and current_location == custom7_location and has_met_custom7 and not on_phone:
-            jump custom7_conversation_init
-        "Talk to the [custom8_thing_name]" if custom_char8_enabled and current_location == custom8_location and not has_met_custom8 and not on_phone:
-            jump custom8_conversation_init
-        "Talk to [custom8_name]" if custom_char8_enabled and current_location == custom8_location and has_met_custom8 and not on_phone:
-            jump custom8_conversation_init
-        "Talk to the [custom9_thing_name]" if custom_char9_enabled and current_location == custom9_location and not has_met_custom9 and not on_phone:
-            jump custom9_conversation_init
-        "Talk to [custom9_name]" if custom_char9_enabled and current_location == custom9_location and has_met_custom9 and not on_phone:
-            jump custom9_conversation_init
-        "Talk to the [custom10_thing_name]" if custom_char10_enabled and current_location == custom10_location and not has_met_custom10 and not on_phone:
-            jump custom10_conversation_init
-        "Talk to [custom10_name]" if custom_char10_enabled and current_location == custom10_location and has_met_custom10 and not on_phone:
-            jump custom10_conversation_init
+    python:
+        menu_options = []
 
-        "Leave house":
-            stop bellysound fadeout 1.0
-            jump city_map
+        if debug_mode:
+            menu_options.append(("(Steam Review Debug Menu)", "steam_debug_menu"))
+            menu_options.append(("Open cheat menu", "debug_cheat_menu"))
+            menu_options.append(("Open test menu", "debug_test_menu"))
+            menu_options.append(("Set game preferences", "game_setup"))
 
-        "Go to parking garage":
-            jump parking_garage
+        for item in ActorList:
+            if item.has_met:
+                menu_options.append(("Talk to " + item.name, item.name.lower() + "_conversation")) 
+            else:
+                menu_options.append(("Talk to the " + item.thing_name,  item.name.lower() + "_conversation")) 
 
-        "Talk with Sigrid" if not is_alone:
-            s "Yes, hun?"
-            jump sigrid_conversation
+        menu_options.append(("Leave house", "city_map"))
+        menu_options.append(("Go to parking garage", "parking_garage"))
 
-        "Do [pushups_num] push ups" if currentenergy >= 5 and currentstamina >= 50:
-            $activitymins = minutes + 30
-            call exercise_athletics_pushups 
-            jump home3
+        if not is_alone:
+            menu_options.append(("Talk to Sigrid", "Sigrid_conversation"))
+        if currentenergy >= 5 and currentstamina >= 50:
+            menu_options.append(("Do [pushups_num] push ups", "pushups"))
 
-        "Sit down in hot tub":
-            jump home3_hot_tub_start
+        menu_options.append(("Sit down in hot tub", "home3_hot_tub_start"))
+        menu_options.append(("Back", "home3"))
+    ###################################################
+    $ result = renpy.display_menu(menu_options)
+    ###################################################
+    if result == "steam_debug_menu" or result == "debug_cheat_menu" or result == "debug_test_menu" or result == "game_setup":
+        $renpy.call(result)
+        jump home3
+    elif result == "city_map":
+        stop bellysound fadeout 1.0
+        $ renpy.jump(result)
+    elif result == "Sigrid_conversation":
+        s "Yes, hun?"
+        $ renpy.jump(result)
+    elif result == "pushups":
+        $activitymins = minutes + 30
+        call exercise_athletics_pushups 
+        jump home3
 
-        "Back":
-            jump home3
+    else:
+        $ renpy.jump(result)
     return
+    

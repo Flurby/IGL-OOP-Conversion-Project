@@ -7,7 +7,7 @@ label menu_test:
             call menu_test_new
 return
 
-label menu_test_new:
+label menu_test_old:
     $menuset = ["Leave apartment"]
 
     menu:
@@ -52,7 +52,7 @@ label menu_test_new:
 
 
 
-label menu_test_old:
+label menu_test_new:
     python:
 
         menu_options = []

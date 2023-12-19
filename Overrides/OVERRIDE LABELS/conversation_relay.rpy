@@ -1,6 +1,3 @@
-```
-default skipConversationTimer = False
-```
 label relay_conversation_override:
     if conversing_with == "Elaine":
         if current_location == elaine_location and (is_in_public or not is_alone):
@@ -88,28 +85,15 @@ label relay_conversation_override:
         elif on_phone:
             jump custom10_conversation
 
-    $ in_conversation = False
-    $conversing_with = "None"
-    $ cutscene = True
-    jump check_basic_needs
-```
-label end_conversation:
-    $ cutscene = True
-    $ on_phone = False
-    $ phone_answered = False
-    $ in_conversation = False
-    $conversing_with = "None"
-    $ auto_willing_digestion = False
-    $ jasmine_warned_digest = False
-    jump check_basic_needs
+    python:
+        for item in ActorList:
+            if conversing_with == item.name:
+                if current_location == item.location and (is_in_public or not is_alone):
+                    renpy.jump(item.name.lower() + "_conversation")
+                elif on_phone:
+                    renpy.jump(item.name.lower() + "_conversation")
 
-label end_conversation_called:
-    $ cutscene = True
-    $ on_phone = False
-    $ phone_answered = False
     $ in_conversation = False
     $conversing_with = "None"
-    $ auto_willing_digestion = False
-    $ jasmine_warned_digest = False
-    return
-```
+    $ cutscene = True
+    jump check_basic_needs
